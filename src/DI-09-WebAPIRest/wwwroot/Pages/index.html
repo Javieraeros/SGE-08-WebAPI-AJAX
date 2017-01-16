@@ -4,13 +4,50 @@
     <meta charset="utf-8" />
     <script type="text/javascript" src="../Scripts/Entidades.js"></script>
     <script type="text/javascript" src="../Scripts/Ajax.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+  $(function() {
+	$("#dialog").hide();
+    function abrir() {
+		$("#dialog").show();
+		$( "#dialog" ).dialog();
+	}
 
+    $("#insertarPersona").click(function () {
+        $("#dialog").parent().show();
+		abrir();
+	});
+  });
+    </script>
     <title></title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 <body>
     <div id="txtContenedor"></div>
     <button id="btnGetLista">Listado</button>
+    <button id="insertarPersona" >Insertar</button>
     <div id="mitabla">
+    </div>
+    <div id="dialog" title="Basic dialog">
+        <label id="insertarNombre">Nombre: </label>
+        <input type="text" id="inputNombre"/><br/>
+
+        <label id="insertarApellidos">Apellidos: </label>
+        <input type="text"id="inputApellidos" /><br />
+
+        <label id="insertarFecha">Fecha de Nacimiento: </label>
+        <input type="date" id="inputFecha"/><br />
+
+        <label id="insertarTelefono">Teléfono: </label>
+        <input type="number" id="inputTelefono"/><br />
+
+        <label id="insertarDireccion">Dirección: </label>
+        <input type="text" id="inputDireccion"/><br />
+
+        <button id="btnCancelarInsercion">Cancelar</button>
+        <button id="btnPostPersona">Guardar</button>
+
     </div>
 </body>
 </html>
