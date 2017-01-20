@@ -38,8 +38,35 @@ function getPersonas() {
     xml.send();
 }
 
-function getPersona() {
+function getPersona(id,callback) {
+    //1. Instanciar objeto XMLHttpRequest
+    var xml = new XMLHttpRequest();
 
+    //2. Definir método open
+    xml.open("GET", "../api/persona/" + id);
+
+    //3. Definir cabeceras
+    //En ese caso nada
+
+    //4. Definir qué hacer cuando va cambiando el estado
+    xml.onreadystatechange = function () {
+        if (xml.readyState < 4) {
+        }
+        else
+            if (xml.readyState == 4 && xml.status == 200) {
+                //6.Tratamiento de los datos recibidos del servidor
+                var data = JSON.parse(xml.responseText);
+                //tratar los datos;
+                var persona = new Persona();
+                persona = data;
+                if (callback != null) {
+                    callback();
+                }
+            }
+    }
+
+    //5. Enviar la solicitud, send tiene parámetros opcionales
+    xml.send();
     return p;
 }
 
@@ -214,7 +241,7 @@ function editaPersona(id) {
         $("#dialogPut").show();
         $("#dialogPut").dialog();
 
-    //No me gusta, pero bueno....
+    //TODO No me gusta, pero bueno.... UASAR CALLBACK!!
     //1. Instanciar objeto XMLHttpRequest
         var xml = new XMLHttpRequest();
 
@@ -240,7 +267,7 @@ function editaPersona(id) {
                     document.getElementById("inputNombrePut").value = persona.nombre;
                     document.getElementById("inputApellidosPut").value = persona.apellidos;
 
-                    //TODO no funciona bieeeen!
+                    //TODO no funciona bien!
                     document.getElementById("inputFechaPut").value = persona.fechaNac;
 
                     document.getElementById("inputTelefonoPut").value = persona.telefono;
