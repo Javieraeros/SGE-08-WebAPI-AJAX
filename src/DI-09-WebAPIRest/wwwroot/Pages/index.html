@@ -8,7 +8,8 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
   $(function() {
-	$("#dialog").hide();
+      $("#dialog").hide();
+      $("#dialogPut").hide();
     function abrir() {
 		$("#dialog").show();
 		$( "#dialog" ).dialog();
@@ -49,5 +50,28 @@
         <button id="btnPostPersona">Guardar</button>
 
     </div>
+
+    <div id="dialogPut" title="Basic dialog">
+        <label id="idPersona" hidden="hidden"></label>
+        <label id="insertarNombrePut">Nombre: </label>
+        <input type="text" id="inputNombrePut" /><br />
+
+        <label id="insertarApellidosPut">Apellidos: </label>
+        <input type="text" id="inputApellidosPut" /><br />
+
+        <label id="insertarFechaPut">Fecha de Nacimiento: </label>
+        <input type="date" id="inputFechaPut" /><br />
+
+        <label id="insertarTelefonoPut">Teléfono: </label>
+        <input type="number" id="inputTelefonoPut" /><br />
+
+        <label id="insertarDireccionPut">Dirección: </label>
+        <input type="text" id="inputDireccionPut" /><br />
+
+        <button id="btnCancelarInsercionPut">Cancelar</button>
+        <button id="btnPutPersona">Guardar</button>
+
+    </div>
+    <h3 id="informacion"></h3>
 </body>
 </html>
