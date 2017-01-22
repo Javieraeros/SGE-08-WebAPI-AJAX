@@ -1,5 +1,5 @@
 ﻿window.addEventListener("load", start);
-//TODO Falta eliminar,actualizar y buscar
+//TODO Mostrar a Fernando
 function start() {
     document.getElementById("btnGetLista").addEventListener("click", getPersonas);
     document.getElementById("btnPostPersona").addEventListener("click", postPersona);
@@ -38,6 +38,9 @@ function getPersonas() {
     xml.send();
 }
 
+//Método que llama a una persona mediante un id.
+//Importante mencionar que como segundo parámetro podemos enviarle una función
+//Para que cuando reciba la persona, se ejecute dicha función (mola)
 function getPersona(id,callback) {
     //1. Instanciar objeto XMLHttpRequest
     var xml = new XMLHttpRequest();
@@ -60,14 +63,13 @@ function getPersona(id,callback) {
                 var persona = new Persona();
                 persona = data;
                 if (callback != null) {
-                    callback();
+                    callback(persona);
                 }
             }
     }
 
     //5. Enviar la solicitud, send tiene parámetros opcionales
     xml.send();
-    return p;
 }
 
 function creaTablitaOP(data) {
@@ -208,7 +210,7 @@ function borrarInsert() {
     document.getElementById("inputDireccion").value = "";
 }
 
-//Usar Alert
+
 function borraPersona(id) {
     //1. Instanciar objeto XMLHttpRequest
     var xml = new XMLHttpRequest();
@@ -235,50 +237,25 @@ function borraPersona(id) {
     xml.send();
 }
 
+//Abre el cuadro de diálogo de editar persona
 function editaPersona(id) {
 
-        $("#dialogPut").parent().show();
-        $("#dialogPut").show();
-        $("#dialogPut").dialog();
-
-    //TODO No me gusta, pero bueno.... UASAR CALLBACK!!
-    //1. Instanciar objeto XMLHttpRequest
-        var xml = new XMLHttpRequest();
-
-    //2. Definir método open
-        xml.open("GET", "../api/persona/"+id);
-
-    //3. Definir cabeceras
-    //En ese caso nada
-
-    //4. Definir qué hacer cuando va cambiando el estado
-        xml.onreadystatechange = function () {
-            if (xml.readyState < 4) {
-            }
-            else
-                if (xml.readyState == 4 && xml.status == 200) {
-                    //6.Tratamiento de los datos recibidos del servidor
-                    var data = JSON.parse(xml.responseText);
-                    //tratar los datos;
-                    var persona = new Persona();
-                    persona = data;
-
-                    document.getElementById("idPersona").innerHTML = persona.id;
-                    document.getElementById("inputNombrePut").value = persona.nombre;
-                    document.getElementById("inputApellidosPut").value = persona.apellidos;
-
-                    //TODO no funciona bien!
-                    document.getElementById("inputFechaPut").value = persona.fechaNac;
-
-                    document.getElementById("inputTelefonoPut").value = persona.telefono;
-                    document.getElementById("inputDireccionPut").value = persona.direccion;
-                }
-        }
-
-    //5. Enviar la solicitud, send tiene parámetros opcionales
-        xml.send();
+    $("#dialogPut").parent().show();
+    $("#dialogPut").show();
+    $("#dialogPut").dialog();
+        
+    getPersona(id, function (persona) {
+        document.getElementById("idPersona").innerHTML = persona.id;
+        document.getElementById("inputNombrePut").value = persona.nombre;
+        document.getElementById("inputApellidosPut").value = persona.apellidos;
+        var fechaBuena=formateaFecha(persona.fechaNac);
+        document.getElementById("inputFechaPut").value = fechaBuena;
+        document.getElementById("inputTelefonoPut").value = persona.telefono;
+        document.getElementById("inputDireccionPut").value = persona.direccion;
+    });
 }
 
+//Método que llama asincronamente al método put de persona
 function guardarPut() {
     id=document.getElementById("idPersona").innerHTML;
    //1. Instanciar objeto XMLHttpRequest
@@ -305,9 +282,12 @@ function guardarPut() {
 
    $("#dialogPut").parent().hide();
 
-   getPersonas();
+    //Pequeño delay para que cuando recargue la persona, ya esté actualizada en la bbdd
+   setTimeout('getPersonas()', 500);
+   
 }
 
+//Borra los datos del diálogo modificar persona
 function borrarInsertPut() {
 
     document.getElementById("inputNombrePut").value = "";
@@ -317,10 +297,31 @@ function borrarInsertPut() {
     document.getElementById("inputDireccionPut").value = "";
 }
 
+//Borra los elementos de modificar una persona y cierra el cuadro de diálogo
 function cancelarPut() {
     borrarInsertPut();
 
     $("#dialogPut").parent().hide();
 
     getPersonas();
+}
+
+//Método que formatea una fecha para que 
+function formateaFecha(fechaCadena) {
+    //Pasamos a tipo DAte
+    var date = new Date(fechaCadena);
+
+    //Recuperamos cada una de las partes
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    //Modificamos y ponemos bonita la fecha para que el input type="date" nos lo acepte
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var fechaFormateada = year + "-" + month + "-" + day;
+
+    return fechaFormateada;
+
 }
