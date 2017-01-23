@@ -274,16 +274,24 @@ function guardarPut() {
    //3. Definir cabeceras
    xml.setRequestHeader("Content-Type", "application/json");
 
-   //4. Definir qué hacer cuando va cambiando el estado
+    //4. Definir qué hacer cuando va cambiando el estado
+   xml.onreadystatechange = function () {
+       if (xml.readyState < 4) {
+           document.getElementById("txtContenedor").innerHTML = "Cargando...";
+       }
+       else
+           if (xml.readyState == 4 && xml.status == 200) {
+               //6.Tratamiento de los datos recibidos del servidor
+               alert("Persona guardada correctamente");
+               getPersonas();
+           }
+   }
    //5. Enviar la solicitud, send tiene parámetros opcionales
    xml.send(JSON.stringify(p));
 
    borrarInsertPut();
 
    $("#dialogPut").parent().hide();
-
-    //Pequeño delay para que cuando recargue la persona, ya esté actualizada en la bbdd
-   setTimeout('getPersonas()', 500);
    
 }
 
