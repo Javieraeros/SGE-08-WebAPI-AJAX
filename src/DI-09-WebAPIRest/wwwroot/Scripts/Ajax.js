@@ -1,6 +1,8 @@
 ﻿window.addEventListener("load", start);
 //TODO Mostrar a Fernando
 function start() {
+    
+    document.getElementById("btnPruebaGets").addEventListener("click", onClickPrueba);
     document.getElementById("btnGetLista").addEventListener("click", getPersonas);
     document.getElementById("btnPostPersona").addEventListener("click", postPersona);
     document.getElementById("btnCancelarInsercion").addEventListener("click", cancelar);
@@ -332,4 +334,15 @@ function formateaFecha(fechaCadena) {
 
     return fechaFormateada;
 
+}
+function miFuncion1(persona) {
+    alert(persona.nombre);
+}
+
+function miFuncion2(persona) {
+    alert(persona.nombre);
+}
+function onClickPrueba() {
+    getPersona(25,miFuncion1);
+    getPersona(30,miFuncion2);
 }
